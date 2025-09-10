@@ -60,7 +60,7 @@ The **Gallbladder AI Diagnostic Tool** is a cutting-edge web application that le
 
 Experience the tool in action:
 
-**[📱 Try Live Demo →](https://your-demo-url.com)**
+**[📱 Try Live Demo →](https://gallbladder-web.vercel.app/)**
 
 *Sample ultrasound images available for testing*
 
