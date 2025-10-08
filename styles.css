@@ -292,16 +292,6 @@ body {
     animation: slideIn 0.5s ease;
 }
 
-.btn-warning {
-    background: linear-gradient(45deg, #f39c12, #f1c40f);
-    border: none;
-    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
-}
-
-.btn-warning:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(243, 156, 18, 0.4);
-}
 @keyframes slideIn {
     from {
         opacity: 0;
@@ -512,4 +502,5 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
 
