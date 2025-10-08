@@ -40,7 +40,6 @@
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <!-- Upload Card -->
                 <div class="upload-card">
                     <div class="card-header">
                         <h3 class="mb-0">
@@ -49,9 +48,7 @@
                         </h3>
                         <p class="text-muted mb-0">Select a gallbladder ultrasound image for AI analysis</p>
                     </div>
-                    
                     <div class="card-body">
-                        <!-- Upload Area -->
                         <div class="upload-area" id="uploadArea">
                             <div class="upload-content">
                                 <i class="fas fa-cloud-upload-alt upload-icon"></i>
@@ -68,53 +65,28 @@
                         <!-- Preview Section -->
                         <div id="preview" class="preview-section"></div>
 
-                        <!-- Action Button -->
-                        <div class="text-center mt-4">
-                            <button id="predictBtn" onclick="predictImage()" class="btn btn-success btn-lg" disabled>
+                        <!-- Action Buttons -->
+                        <div class="text-center mt-4 d-flex justify-content-center gap-3 flex-wrap">
+                            <button id="predictBtn" onclick="predictImage('predict')" class="btn btn-success btn-lg" disabled>
                                 <i class="fas fa-brain me-2"></i>
                                 <span class="btn-text">Analyze Image</span>
+                                <div class="spinner-border spinner-border-sm ms-2 d-none" role="status"></div>
+                            </button>
+
+                            <button id="xaiBtn" onclick="predictImage('explain')" class="btn btn-warning btn-lg" disabled>
+                                <i class="fas fa-lightbulb me-2"></i>
+                                <span class="btn-text">Analyze with XAI</span>
                                 <div class="spinner-border spinner-border-sm ms-2 d-none" role="status"></div>
                             </button>
                         </div>
 
                         <!-- Results Section -->
                         <div id="result" class="result-section"></div>
-                        
+
                         <!-- Error Section -->
                         <div id="error" class="alert alert-danger d-none" role="alert">
                             <i class="fas fa-exclamation-triangle me-2"></i>
                             <span id="errorMessage"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Information Cards -->
-                <div class="row mt-5">
-                    <div class="col-md-4">
-                        <div class="info-card">
-                            <div class="info-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h5>Secure & Private</h5>
-                            <p>Your medical images are processed securely and never stored permanently.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="info-card">
-                            <div class="info-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <h5>Instant Results</h5>
-                            <p>Get AI-powered analysis results in seconds, not hours or days.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="info-card">
-                            <div class="info-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <h5>High Accuracy</h5>
-                            <p>Advanced machine learning models trained on thousands of medical images.</p>
                         </div>
                     </div>
                 </div>
@@ -140,4 +112,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
