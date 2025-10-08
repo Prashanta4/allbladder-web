@@ -113,6 +113,37 @@ async function predictImage(mode) {
 
 function displayResults(data, mode) {
     const confidence = Math.round(data.confidence_score * 100);
+
+    let xaiImagesHTML = '';
+    if (mode === 'explain' && data.xai) {
+        // Generate image cards for each XAI method
+        const xaiMethods = ['gradcam', 'shap', 'lime'];
+        xaiImagesHTML = `
+            <div class="text-center mt-4">
+                <h5>Explainability Maps</h5>
+                <div class="row justify-content-center mt-3">
+                    ${xaiMethods
+                        .filter(m => data.xai[m])
+                        .map(
+                            m => `
+                            <div class="col-md-4 mb-3">
+                                <div class="card shadow-sm">
+                                    <div class="card-header text-capitalize fw-bold bg-light">${m}</div>
+                                    <div class="card-body p-2">
+                                        <img src="data:image/png;base64,${data.xai[m]}" 
+                                             class="img-fluid rounded" 
+                                             alt="${m} visualization">
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                        )
+                        .join('')}
+                </div>
+            </div>
+        `;
+    }
+
     result.innerHTML = `
         <div class="result-card">
             <div class="result-header">
@@ -127,15 +158,13 @@ function displayResults(data, mode) {
                 <span class="result-label"><i class="fas fa-percentage me-2"></i>Confidence:</span>
                 <span class="result-value">${confidence}%</span>
             </div>
-            ${mode === 'explain' && data.explanation_image ? `
-            <div class="text-center mt-3">
-                <h5>Explanation Map</h5>
-                <img src="data:image/png;base64,${data.explanation_image}" class="img-fluid rounded shadow mt-2" alt="XAI Visualization">
-            </div>` : ''}
+            ${xaiImagesHTML}
         </div>
     `;
+
     result.style.display = 'block';
 }
+
 
 function setLoadingState(loading, mode) {
     const btn = mode === 'explain' ? xaiBtn : predictBtn;
@@ -159,3 +188,4 @@ function showError(msg) {
 
 function hideError() { error.classList.add('d-none'); }
 function hideResult() { result.style.display = 'none'; }
+
