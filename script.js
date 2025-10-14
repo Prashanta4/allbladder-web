@@ -1,6 +1,7 @@
 // Global variables
 let selectedFile = null;
 let isProcessing = false;
+let _lastChangeMs = 0; // ignore duplicate rapid change events
 
 // DOM Elements
 const imageInput = document.getElementById('imageInput');
@@ -12,34 +13,83 @@ const errorMessage = document.getElementById('errorMessage');
 const predictBtn = document.getElementById('predictBtn');
 const xaiBtn = document.getElementById('xaiBtn');
 
-// Event listeners
-document.addEventListener('DOMContentLoaded', initializeEventListeners);
+// Named handlers so we don't accidentally attach duplicates
+function onImageInputChange(e) {
+    // Debounce / ignore duplicates: if a change happened in the last 500ms, ignore
+    const now = Date.now();
+    if (now - _lastChangeMs < 500) {
+        // ignore noisy duplicate
+        return;
+    }
+    _lastChangeMs = now;
 
-function initializeEventListeners() {
-    imageInput.addEventListener('change', handleFileSelect);
-    uploadArea.addEventListener('click', () => imageInput.click());
-    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
-    uploadArea.addEventListener('dragleave', e => { e.preventDefault(); uploadArea.classList.remove('dragover'); });
-    uploadArea.addEventListener('drop', handleDrop);
-    document.addEventListener('dragover', e => e.preventDefault());
-    document.addEventListener('drop', e => e.preventDefault());
-}
-
-function handleFileSelect(e) {
-    const file = e.target.files[0];
+    const file = e.target.files && e.target.files[0];
     if (file) {
         validateAndProcessFile(file);
-        e.target.value = "";
+        // Clear input value AFTER a short delay so the "same file" can be picked again and fire change
+        setTimeout(() => {
+            try { imageInput.value = ""; } catch (err) { /* ignore */ }
+        }, 200);
     }
 }
 
-function handleDrop(e) {
+function onUploadAreaClick(e) {
+    // clicking the upload area should open the file picker
     e.preventDefault();
-    uploadArea.classList.remove('dragover');
-    const files = e.dataTransfer.files;
-    if (files.length > 0) validateAndProcessFile(files[0]);
+    e.stopPropagation();
+    imageInput.click();
 }
 
+function onUploadAreaDragOver(e) {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+}
+
+function onUploadAreaDragLeave(e) {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+}
+
+function onUploadAreaDrop(e) {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    const files = e.dataTransfer && e.dataTransfer.files;
+    if (files && files.length > 0) {
+        // protect against very quick duplicate events
+        const now = Date.now();
+        if (now - _lastChangeMs < 300) return;
+        _lastChangeMs = now;
+
+        validateAndProcessFile(files[0]);
+        // keep input cleared so user can later click choose file and the change will fire
+        setTimeout(() => {
+            try { imageInput.value = ""; } catch (err) { /* ignore */ }
+        }, 200);
+    }
+}
+
+// attach listeners once DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Remove any previously attached listeners (safe no-op)
+    imageInput.removeEventListener('change', onImageInputChange);
+    uploadArea.removeEventListener('click', onUploadAreaClick);
+    uploadArea.removeEventListener('dragover', onUploadAreaDragOver);
+    uploadArea.removeEventListener('dragleave', onUploadAreaDragLeave);
+    uploadArea.removeEventListener('drop', onUploadAreaDrop);
+
+    // Attach listeners
+    imageInput.addEventListener('change', onImageInputChange);
+    uploadArea.addEventListener('click', onUploadAreaClick);
+    uploadArea.addEventListener('dragover', onUploadAreaDragOver);
+    uploadArea.addEventListener('dragleave', onUploadAreaDragLeave);
+    uploadArea.addEventListener('drop', onUploadAreaDrop);
+
+    // Prevent page-level drag/drop from navigating away
+    document.addEventListener('dragover', e => e.preventDefault());
+    document.addEventListener('drop', e => e.preventDefault());
+});
+
+// rest of your helpers (unchanged except small touches)
 function validateAndProcessFile(file) {
     hideError();
     const allowed = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
@@ -82,8 +132,12 @@ function removeImage() {
     disableButtons();
     hideResult();
     hideError();
-    imageInput.value = "";
+    try { imageInput.value = ""; } catch (err) { /* ignore */ }
 }
+
+// predictImage, displayResults, setLoadingState, showError, hideError, hideResult
+// keep as you already implemented them — unchanged
+// (copy your existing functions here)
 
 async function predictImage(mode) {
     if (!selectedFile || isProcessing) return;
@@ -94,7 +148,7 @@ async function predictImage(mode) {
     setLoadingState(true, mode);
 
     try {
-        const endpoint = mode === 'explain' 
+        const endpoint = mode === 'explain'
             ? 'https://prasanta4-my-model-deployment.hf.space/explain'
             : 'https://prasanta4-my-model-deployment.hf.space/predict';
 
@@ -116,11 +170,10 @@ async function predictImage(mode) {
 }
 
 function displayResults(data, mode) {
-    const confidence = Math.round(data.confidence_score * 100);
+    const confidence = Math.round((data.confidence_score ?? 0) * 100);
 
     let xaiImagesHTML = '';
     if (mode === 'explain' && data.xai) {
-        // Generate image cards for each XAI method
         const xaiMethods = ['gradcam', 'shap', 'lime'];
         xaiImagesHTML = `
             <div class="text-center mt-4">
@@ -165,10 +218,8 @@ function displayResults(data, mode) {
             ${xaiImagesHTML}
         </div>
     `;
-
     result.style.display = 'block';
 }
-
 
 function setLoadingState(loading, mode) {
     const btn = mode === 'explain' ? xaiBtn : predictBtn;
@@ -192,9 +243,3 @@ function showError(msg) {
 
 function hideError() { error.classList.add('d-none'); }
 function hideResult() { result.style.display = 'none'; }
-
-
-
-
-
-
