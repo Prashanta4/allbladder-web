@@ -135,8 +135,8 @@ async function predictImage(mode) {
     try {
         const endpoint = mode === 'explain'
             ? 'https://prasanta4-my-model-deployment.hf.space/explain'
-            : 'https://prasanta4-test-docker.hf.space/predict';
-            //: 'https://prasanta4-my-model-deployment.hf.space/predict';
+            //: 'https://prasanta4-test-docker.hf.space/predict';
+            : 'https://prasanta4-my-model-deployment.hf.space/predict';
 
         const formData = new FormData();
         formData.append('file', selectedFile);
@@ -245,4 +245,5 @@ function hideError() {
 function hideResult() {
     result.style.display = 'none';
 }
+
 
