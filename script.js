@@ -82,6 +82,7 @@ function removeImage() {
     disableButtons();
     hideResult();
     hideError();
+    imageInput.value = "";
 }
 
 async function predictImage(mode) {
@@ -191,6 +192,7 @@ function showError(msg) {
 
 function hideError() { error.classList.add('d-none'); }
 function hideResult() { result.style.display = 'none'; }
+
 
 
 
