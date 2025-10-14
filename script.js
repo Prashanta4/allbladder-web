@@ -27,7 +27,10 @@ function initializeEventListeners() {
 
 function handleFileSelect(e) {
     const file = e.target.files[0];
-    if (file) validateAndProcessFile(file);
+    if (file) {
+        validateAndProcessFile(file);
+        e.target.value = "";
+    }
 }
 
 function handleDrop(e) {
@@ -188,6 +191,7 @@ function showError(msg) {
 
 function hideError() { error.classList.add('d-none'); }
 function hideResult() { result.style.display = 'none'; }
+
 
 
 
