@@ -439,9 +439,9 @@ copies or substantial portions of the Software.
 ## 🙏 Acknowledgments
 
 ### 👨‍💻 Development Team
-- **Lead Developer**: [Your Name](https://github.com/your-username)
-- **UI/UX Designer**: [Designer Name](https://github.com/designer-username)
-- **Medical Consultant**: [Doctor Name](mailto:doctor@hospital.com)
+- **Lead Developer**: [Prashanta Sarker](https://github.com/Prashanta4)
+- **UI/UX Designer**: [Prashanta Sarker](https://github.com/Prashanta4)
+- **Medical Consultant**: [Mirpur Kidney Foundation](mailto:doctor@hospital.com)
 
 ### 🎓 Research & Resources
 - **Medical Literature**: Latest gallbladder imaging research
