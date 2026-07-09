@@ -9,7 +9,7 @@
 
 **Advanced AI-powered gallbladder condition classification from ultrasound images**
 
-[🚀 Live Demo](#live-demo) • [📋 Features](#features) • [🛠️ Installation](#installation) • [📖 Documentation](#documentation) • [🤝 Contributing](#contributing)
+[🚀 Live Demo](https://gallbladder-web.vercel.app/) • [📋 Features](#features) • [🛠️ Installation](#installation) • [📖 Documentation](#documentation) • [🤝 Contributing](#contributing)
 
 </div>
 
