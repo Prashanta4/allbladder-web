@@ -9,7 +9,7 @@
 
 **Advanced AI-powered gallbladder condition classification from ultrasound images**
 
-[🚀 Live Demo](https://gallbladder-web-git-main-prashanta4s-projects.vercel.app/) • [📋 Features](#features) • [🛠️ Installation](#installation) • [📖 Documentation](#documentation) • [🤝 Contributing](#contributing)
+[🚀 Live Demo](https://gallbladder-web.vercel.app/) • [📋 Features](#features) • [🛠️ Installation](#installation) • [📖 Documentation](#documentation) • [🤝 Contributing](#contributing)
 
 </div>
 
@@ -60,7 +60,7 @@ The **Gallbladder AI Diagnostic Tool** is a cutting-edge web application that le
 
 Experience the tool in action:
 
-**[📱 Try Live Demo →](https://gallbladder-web-git-main-prashanta4s-projects.vercel.app/)**
+**[📱 Try Live Demo →](https://gallbladder-web.vercel.app/)**
 
 *Sample ultrasound images available for testing*
 
